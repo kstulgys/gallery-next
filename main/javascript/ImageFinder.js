@@ -15,16 +15,16 @@
      *
      */
 
-    async search(query, moduleId, signal) {
+    search(query, moduleId, signal, cb) {
       console.log(query, moduleId)
       if (!this.modules.includes(moduleId)) {
         throw new Error()
       }
       if (moduleId === 'static') {
-        this._static.search(query)
+        this._static.search(query, cb)
       }
       if (moduleId === 'flickr') {
-        await this._flickr.search(query, signal)
+        this._flickr.search(query, signal, cb)
       }
     }
   }

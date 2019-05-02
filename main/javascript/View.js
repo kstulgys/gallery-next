@@ -7,26 +7,24 @@
 
     addToNode(node) {
       node.insertAdjacentHTML('afterbegin', this.render())
-      this.onViewReady()
-    }
-
-    cacheDOM() {
       this.cache.results = document.querySelector('.gallery-results')
       this.cache.form = document.querySelector('.search')
       this.cache.input = document.querySelector('.search__field')
       this.cache.dropDown = document.querySelector('select')
       this.cache.overlay = document.querySelector('.overlay')
+      this.onViewReady()
     }
 
     addSearchResultsToView(images) {
-      console.log(images)
       this.cache.results.innerHTML = ''
+
       images.forEach(image => {
         this.cache.results.insertAdjacentHTML(
           'beforeend',
           this.renderImage(image)
         )
       })
+
       this.cache.allImages = [...document.querySelectorAll('.image')]
     }
 
@@ -42,10 +40,21 @@
       this.cache.input.focus()
     }
 
+    showNoResults() {
+      this.cache.results.innerHTML = ''
+      this.cache.results.insertAdjacentHTML(
+        'afterbegin',
+        `<div class='no-results'>
+          <h1>No results found :(</h1>
+         </div>`
+      )
+      // document.querySelector('.no-results').classList.add('active')
+    }
+
     render() {
       return `
               <div class="container">
-              
+
                 <!-- header -->
                 <header class="header">
                   <img
@@ -88,7 +97,7 @@
 
                 <!-- results -->
                 <section class="gallery-results">
-      
+
                 </section>
                 <!-- end of results -->
 

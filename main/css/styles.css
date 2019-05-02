@@ -195,7 +195,7 @@
   font-weight: 1;
 }
 
-/* .overlay {
+.overlay {
   position: fixed;
   top: 0;
   right: 0;
@@ -205,4 +205,35 @@
   background: rgb(240, 157, 81, 0.5);
   z-index: 1;
   visibility: hidden;
-} */
+}
+
+.no-results {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.no-results h1 {
+  /* transform: translateX(-100%); */
+  /* transition: all 0.2s linear; */
+  animation: appear 1.5s;
+}
+
+@keyframes appear {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+select {
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+}

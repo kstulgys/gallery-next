@@ -1,8 +1,6 @@
 ;(function(window) {
-  var Static = function() {}
-
-  Static.prototype = {
-    search(query) {
+  var Static = class Static {
+    search(query, cb) {
       const images = window.DATA.staticImagesDb.reduce((acc, next) => {
         const { title, id, url } = next
         if (title.includes(query)) {
@@ -10,11 +8,9 @@
         }
         return acc
       }, [])
-      return { query, images }
-    },
-    getModuleId() {
-      return 'static'
+      cb({ query, images })
     }
   }
+
   window.CLASSES.StaticClass = Static
 })(window)
