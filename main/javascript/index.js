@@ -3,7 +3,8 @@ var {
   FlickrClass,
   ImageFinderClass,
   ViewClass,
-  GalleryClass
+  GalleryClass,
+  StoreClass
 } = window.CLASSES
 
 var static = new StaticClass()

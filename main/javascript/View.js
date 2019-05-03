@@ -1,12 +1,11 @@
 ;(function(window) {
   var View = class View {
-    constructor(onViewReady) {
+    constructor(setEventListeners) {
       this.cache = {}
-      this.onViewReady = onViewReady
+      this.setEventListeners = setEventListeners
     }
 
-    addToNode(node) {
-      node.insertAdjacentHTML('afterbegin', this.render())
+    cacheDOM() {
       this.cache.results = document.querySelector('.gallery-results')
       this.cache.form = document.querySelector('.search')
       this.cache.input = document.querySelector('.search__field')
@@ -14,8 +13,13 @@
       this.cache.overlay = document.querySelector('.overlay')
       this.cache.likes = document.querySelector('.likes__list')
       this.cache.clearLikes = document.querySelector('.clear-likes-btn')
+      this.cache.loader = document.querySelector('.loader')
+      this.setEventListeners()
+    }
 
-      this.onViewReady()
+    addToNode(node) {
+      node.insertAdjacentHTML('afterbegin', this.render())
+      this.cacheDOM()
     }
 
     addSearchResultsToView(images) {
@@ -26,14 +30,14 @@
           this.renderImage(image)
         )
       })
-
       this.cache.allImages = [...document.querySelectorAll('.image-container')]
+      this.lazyLoadImages()
     }
 
     renderImage({ url, id, liked }) {
       return `
         <div class="image-container" data-id=${id}>
-          <img src=${url} class="image"/>
+          <img src="../resources/images/Wix_logo.jpg" data-src="${url}" class="image preload"/>
           <div class='image-action'>
             <span class='like-image'>
             ${
@@ -49,6 +53,16 @@
         </div>
       `
     }
+    clearResults() {
+      this.cache.results.innerHTML = ''
+    }
+    showLoader() {
+      this.cache.loader.style.visibility = 'visible'
+    }
+
+    hideLoader() {
+      this.cache.loader.style.visibility = 'hidden'
+    }
 
     focusInput() {
       this.cache.input.focus()
@@ -58,7 +72,6 @@
       const markup = `<div class='no-results'>
         <h1>No results found :(</h1>
       </div>`
-      this.cache.results.innerHTML = ''
       this.cache.results.insertAdjacentHTML('afterbegin', markup)
     }
 
@@ -71,7 +84,10 @@
     viewImage(image) {
       this.cache.overlay.innerHTML = ''
       this.cache.overlay.style.visibility = 'visible'
-      this.cache.overlay.insertAdjacentHTML('afterbegin', `<img src=${image}/>`)
+      this.cache.overlay.insertAdjacentHTML(
+        'afterbegin',
+        `<img class="overlay-image" src=${image}/>`
+      )
     }
 
     closeImage() {
@@ -104,6 +120,31 @@
 
     clearLikes() {
       this.cache.likes.innerHTML = ''
+    }
+
+    lazyLoadImages() {
+      let images = [...document.querySelectorAll('.image')]
+
+      const interactSettings = {
+        root: document.querySelector('.gallery-results'),
+        rootMargin: '0px 0px 200px 0px'
+      }
+
+      function onIntersection(imageEntites) {
+        imageEntites.forEach(image => {
+          if (image.isIntersecting) {
+            observer.unobserve(image.target)
+            image.target.src = image.target.dataset.src
+            image.target.onload = () => {
+              image.target.classList.remove('preload')
+              image.target.style.animation = 'fadeIn 1.5s'
+            }
+          }
+        })
+      }
+
+      let observer = new IntersectionObserver(onIntersection, interactSettings)
+      images.forEach(image => observer.observe(image))
     }
 
     render() {
@@ -160,9 +201,12 @@
                 <!-- Footer -->
                 <div class="footer">
                   <h1 class="">Designed by Karolis</h1>
-                  <div class="overlay"></div>
                 </div>
-                <!-- end of Footer -->
+                  <!-- end of Footer -->
+                <div class="overlay"></div>
+                <div class="loader">
+                  <img src='../resources/loader.svg'/>
+                </div>
               </div>
               `
     }

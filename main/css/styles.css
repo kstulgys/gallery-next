@@ -81,6 +81,15 @@
 .search__icon:hover {
   transform: translateX(4px);
 }
+select {
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  border-radius: 100px;
+}
+select:focus {
+  outline: none;
+}
+
 .likes {
   position: relative;
   align-self: stretch;
@@ -108,7 +117,6 @@
 .likes__panel {
   position: absolute;
   right: 1rem;
-  /* top: 10rem; */
   z-index: 10;
   margin-top: 1rem;
   padding: 1rem;
@@ -142,7 +150,7 @@
   width: 100%;
   padding: 1rem 0;
   margin-top: 1rem;
-  font-size: 2rem;
+  font-size: 1.75rem;
 }
 
 /* --------------- End of Header ---------------- */
@@ -156,8 +164,7 @@
   padding: 1.5rem 1.5rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  /* grid-template-rows: repeat(auto-fit, minmax(260px, 0.5fr)); */
-
+  grid-auto-rows: 220px;
   grid-column-gap: 1.5rem;
   grid-row-gap: 1.5rem;
   justify-content: center;
@@ -170,10 +177,26 @@
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: var(--mainTransition);
+  border-radius: 0.5rem;
 }
+
+.preload {
+  object-fit: contain;
+  animation: rotate 0.75s infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0) scale(0.2);
+  }
+
+  to {
+    transform: rotate(360deg) scale(0.2);
+  }
+}
+
 .image-container:hover .image {
-  opacity: 0.45;
+  opacity: 0.3;
 }
 .image-container:hover .image-action {
   visibility: visible;
@@ -207,30 +230,6 @@
   cursor: pointer;
 }
 
-/* .bag-btn {
-    position: absolute;
-    top: 70%;
-    right: 0;
-    background: var(--primaryColor);
-    border: none;
-    text-transform: uppercase;
-    padding: 0.5rem 0.75rem;
-    letter-spacing: var(--mainSpacing);
-    font-weight: bold;
-    transition: var(--mainTransition);
-    transform: translateX(101%);
-    cursor: pointer;
-  }
-  .bag-btn:hover {
-    color: var(--mainWhite);
-  }
-  .fa-shopping-cart {
-    margin-right: 0.5rem;
-  }
-  .img-container:hover .bag-btn {
-    transform: translateX(0);
-  } */
-
 /* --------------- end of Gallery Results ---------------- */
 
 /* --------------- Footer ---------------- */
@@ -260,12 +259,29 @@
   width: calc(100% - 450px);
   height: 100%;
   transition: var(--mainTransition);
-  background: rgb(240, 157, 81, 0.5);
+  background: rgb(0, 0, 0, 0.75);
   z-index: 1;
   visibility: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: fadeIn 1.5s;
+}
+
+.overlay-image {
+  display: block;
+  border-radius: 0.5rem;
+  animation: fadeIn 1.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .no-results {
@@ -292,37 +308,17 @@
     opacity: 1;
   }
 }
-
-select {
-  padding: 1rem 3rem;
-  font-size: 1.5rem;
-  border-radius: 100px;
-}
-
-select:focus {
-  outline: none;
-}
-
-/* .products-center {
-  width: 90vw;
-  margin: 0 auto;
-  max-width: 1170px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  grid-column-gap: 1.5rem;
-  grid-row-gap: 2rem;
-}
-.img-container {
-  position: relative;
-  overflow: hidden;
-} */
-
-/* .product-img {
-  display: block;
-  width: 100%;
-  min-height: 12rem;
+.loader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: calc(100% - 450px);
+  height: 100%;
   transition: var(--mainTransition);
+  /* z-index: 1; */
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s;
 }
-.img-container:hover .product-img {
-  opacity: 0.5;
-} */
