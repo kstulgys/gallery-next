@@ -21,6 +21,7 @@
 *::after {
   box-sizing: inherit;
   font-family: inherit;
+  letter-spacing: inherit;
 }
 
 html {
